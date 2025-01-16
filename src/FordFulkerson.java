@@ -90,13 +90,37 @@ public class FordFulkerson {
         return maxFlow;
     }
 
-    public ArrayList<Edge> getMaxFlowEdges() {
-        ArrayList<Edge> maxFlowEdges = new ArrayList<>();
-        for (Edge edge : graph.edges) {
-            if (flow.getOrDefault(edge, 0) > 0) {
-                maxFlowEdges.add(edge);
+    public ArrayList<Edge> getMinCutEdges(Node source) {
+        Set<Node> reachable = new HashSet<>();
+        Queue<Node> queue = new LinkedList<>();
+
+        queue.add(source);
+        reachable.add(source);
+
+        while (!queue.isEmpty()) {
+            Node current = queue.poll();
+            for (Map.Entry<Node, Integer> neighborEntry : residualGraph.getOrDefault(current, new HashMap<>()).entrySet()) {
+                Node neighbor = neighborEntry.getKey();
+                int residualCapacity = neighborEntry.getValue();
+
+                if (residualCapacity > 0 && !reachable.contains(neighbor)) {
+                    reachable.add(neighbor);
+                    queue.add(neighbor);
+                }
             }
         }
-        return maxFlowEdges;
+
+        ArrayList<Edge> minCutEdges = new ArrayList<>();
+        for (Edge edge : graph.edges) {
+            boolean startReachable = reachable.contains(edge.startNode);
+            boolean endReachable = reachable.contains(edge.endNode);
+
+            if (startReachable && !endReachable) {
+                minCutEdges.add(edge);
+            }
+        }
+
+        return minCutEdges;
     }
+
 }

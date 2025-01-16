@@ -54,7 +54,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 
                 FordFulkerson fordFulkerson = new FordFulkerson(graph);
                 int maxFlow = fordFulkerson.findMaxFlow(graph.startNode, graph.endNode);
-                ArrayList<Edge> flowEdges = fordFulkerson.getMaxFlowEdges();
+                ArrayList<Edge> flowEdges = fordFulkerson.getMinCutEdges(graph.startNode);
                 graph.markSelectedEdges(flowEdges);
                 JOptionPane.showMessageDialog(
                         null,
