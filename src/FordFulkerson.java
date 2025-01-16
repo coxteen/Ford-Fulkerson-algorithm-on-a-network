@@ -119,8 +119,6 @@ public class FordFulkerson {
                 minCutEdges.add(edge);
             }
         }
-
         return minCutEdges;
     }
-
 }
